@@ -1,101 +1,237 @@
-import Image from "next/image";
+"use client";
+import "./index.css";
+
+import Comments from "@/components/comments";
+import { KeyboardEvent, useState } from "react";
+import CustomButton from "@/components/custon-button";
+import { DialogDemo } from "@/components/dialog-demo";
+import SonnerDemo from "@/components/sonner-demo";
+import { Button, buttonVariants } from "@/components/ui/button";
+
+import Link from "next/link";
+import { ReactNode, Suspense } from "react";
+import { Toaster } from "sonner";
+
+import hljs from "highlight.js/lib/core";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+hljs.registerLanguage("javascript", js);
+hljs.registerLanguage("typescript", ts);
+hljs.registerLanguage("css", css);
 
 export default function Home() {
+  // console.log(buttonVariants({ variant: "destructive" }));
+  const [code, setCode] = useState(
+    `
+export default function Comments() {
+  const getComments = (): Promise<string[]> => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(["Hello,", "This", "is", "a", "Comment"]), 5000)
+    );
+  };
+  const comments = use(getComments()) as string[];
+
+  return comments.map((comment, index) => <p key={index}>{comment}</p>);
+}
+
+const a = 10;
+    `
+  );
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        {/* <Button asChild>
+          <Link href="/">Link</Link>
+        </Button>
+        <Link href="#" className={buttonVariants()}>
+          Click here
+        </Link> */}
+        {/* <SonnerDemo /> */}
+        {/* <Toaster /> */}
+        {/* <DialogDemo /> */}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        <article className="prose">
+          <h1>Garlic bread with cheese: What the science tells us</h1>
+          <p>
+            For years parents have espoused the health benefits of eating garlic
+            bread with cheese to their children, with the food earning such an
+            iconic status in our culture that kids will often dress up as warm,
+            cheesy loaf for Halloween.
+          </p>
+          <p>
+            But a recent study shows that the celebrated appetizer may be linked
+            to a series of rabies cases springing up around the country.
+          </p>
+        </article>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <Comments />
+        </Suspense>
+
+        <HighlightedCode language="javascript">const a = 10</HighlightedCode>
+
+        <CodeEditor
+          code={code}
+          setCode={setCode}
+          language={"javascript"}
+          noneditable={false}
+        />
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
+}
+
+type Props = {
+  overlay?: ReactNode;
+  language?: string;
+  children: string;
+};
+
+function HighlightedCode({ overlay, language, children }: Props) {
+  const __html = language ? highlightCode(children, language) : children;
+
+  return (
+    <div
+      className={`not-prose relative w-full overflow-x-scroll rounded bg-slate-50 dark:bg-stone-800`}
+    >
+      <div className="relative h-fit min-h-full w-fit min-w-full p-4 text-sm leading-[1.4rem]">
+        <div
+          dangerouslySetInnerHTML={{ __html }}
+          className="h-full w-full whitespace-pre text-nowrap font-firacode not-italic"
+        />
+        {overlay}
+      </div>
+    </div>
+  );
+}
+
+// TODO: newline 처리 더 깔끔하게
+const highlightCode = (code: string, language: string) => {
+  let highlightedCode = hljs.highlight(code, { language }).value;
+
+  if (highlightedCode === "") highlightedCode = " ";
+  if (highlightedCode[highlightedCode.length - 1] === "\n")
+    highlightedCode += " ";
+
+  return highlightedCode;
+};
+
+function CodeEditor({
+  language,
+  code,
+  setCode,
+  noneditable = false,
+}: {
+  language: string;
+  code: string;
+  setCode?: (code: string) => void;
+  noneditable?: boolean;
+}) {
+  return (
+    <HighlightedCode
+      overlay={
+        <CodeTextArea code={code} setCode={setCode} disabled={noneditable} />
+      }
+      language={language}
+    >
+      {code}
+    </HighlightedCode>
+  );
+}
+
+function CodeTextArea({
+  code,
+  disabled,
+  setCode,
+}: {
+  code: string;
+  disabled: boolean;
+  setCode?: (code: string) => void;
+}) {
+  return (
+    <textarea
+      name="code"
+      aria-label="editor"
+      autoCapitalize="off"
+      autoComplete="off"
+      spellCheck="false"
+      className="absolute bottom-4 left-4 right-4 top-4 resize-none whitespace-pre bg-transparent font-firacode text-transparent caret-sky-500 outline-none"
+      value={code}
+      disabled={disabled}
+      onChange={(e) => setCode?.(e.target.value)}
+      onKeyDown={(e) => handleKeyDown(e)}
+    />
+  );
+}
+
+const getLineIndices = (str: string, idx: number) => {
+  let lineStart = idx;
+  while (lineStart > 0 && str[lineStart - 1] !== "\n") lineStart--;
+
+  let wordStart = lineStart;
+  while (str[wordStart] === " " || str[wordStart] === "\t") wordStart++;
+
+  return { wordStart, lineStart };
+};
+
+const handleEnterKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const target = e.target as HTMLTextAreaElement;
+  if (target.selectionStart !== target.selectionEnd) return;
+
+  const selection = target.selectionStart;
+  const lastLetter = target.value[selection - 1];
+
+  const { wordStart, lineStart } = getLineIndices(target.value, selection);
+  const blank = wordStart - lineStart + (lastLetter === "{" ? TAB.length : 0);
+  if (blank === 0) return;
+
+  // Insert carriage return and indented text
+  // https://stackoverflow.com/questions/60581285/
+  document.execCommand("insertText", false, `\n${" ".repeat(blank)}`);
+  e.preventDefault();
+};
+
+const TAB = "  ";
+
+const handleTabKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const target = e.target as HTMLTextAreaElement;
+
+  if (target.selectionStart === target.selectionEnd) {
+    // undoable
+    if (!e.shiftKey) {
+      document.execCommand("insertText", false, TAB);
+    } else {
+      const { wordStart, lineStart } = getLineIndices(
+        target.value,
+        target.selectionStart
+      );
+
+      const blank = wordStart - lineStart;
+      if (blank < TAB.length) return;
+
+      // TODO: undo 이후 selection 남는거 없애기
+      const tmp = target.selectionStart;
+      target.selectionStart = wordStart - TAB.length;
+      target.selectionEnd = wordStart;
+      document.execCommand("delete");
+      target.selectionStart = target.selectionEnd = Math.max(0, tmp - 2);
+    }
+  } else {
+    //
+  }
+};
+
+// https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
+function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+  switch (e.key) {
+    case "Enter":
+      handleEnterKeyDown(e);
+      break;
+    case "Tab":
+      e.preventDefault();
+      handleTabKeyDown(e);
+      break;
+  }
 }
